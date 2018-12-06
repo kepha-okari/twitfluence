@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <div class="col-xs-5">
+    <form style="width:400px">
+      <input type="text" name="screen_name" placeholder="Search for a user" class="form-control" value={{user_name}}>
+      <input type="submit" value="SEARCH" class="btn btn-default btn-block ">
+    </form>
+    <div class="portfoliocard">
+      <div class="coverphoto" style="background-image: url('{{info['profile_banner_url']}}');"></div>
+      <div class="profile_picture" style="background-image: url('{{info['profile_image_url_https']}}')"></div>
+      <div class="left_col">
+        <div class="followers">
+          <div class="follow_count">{{info['followers_count']}}</div>
+          Followers
+        </div>
+        <div class="following">
+          <div class="follow_count">{{info['friends_count']}}</div>
+          Following
+        </div>
+        <div class="following">
+          <div class="follow_count">{{info['statuses_count']}}</div>
+          Tweets
+        </div>
+      </div>
+      <div class="right_col">
+        <h2 class="name">{{info['name']}}</h2>
+        <a href="{{info['url']}}"><h3 class="location">@{{info['screen_name']}}</h3></a>
+        <div class="progress-pie-chart" data-percent="{{percentage_score}}">
+
+          <div class="ppc-progress">
+            <div class="ppc-progress-fill"></div>
+          </div>
+          <div class="ppc-percents">
+            <div class="pcc-percents-wrapper">
+              <span>%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-3">
+
+  </div>
+  <div class="col-xs-4">
+    <div class="span4">
+      <div class="todo mrm">
+        <div class="todo-header">
+          <h3 class="demo-panel-title">Trending Topics</h3>
+        </div>
+        <ul style="overflow-y:scroll; height:470px">
+          <li class="todo-wrap one">
+            <div class="todo-content">
+              <h4 class="todo-name text-center">
+                  Kenya
+                </h4>
+              <ul>
+                {% for trend in trends%}
+                <a href="{{trend['url']}}" style="text-decoration:none">
+                  <div class="trends">
+                    <li style="margin-top:10px">{{trend['name']}}</li>
+                    <hr>
+                  </div>
+                </a>
+                {% endfor %}
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+{% block scripts %} {{super()}}
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+
+
+<script type="text/javascript">
+  $(function() {
+    var $ppc = $('.progress-pie-chart'),
+      percent = parseInt($ppc.data('percent')),
+      deg = 360 * percent / 100;
+    if (percent > 50) {
+      $ppc.addClass('gt-50');
+    }
+    $('.ppc-progress-fill').css('transform', 'rotate(' + deg + 'deg)');
+    $('.ppc-percents span').html(percent + '%');
+  });
+</script>
+
+{% endblock %} {% endblock %} {% block styles %} {{ super() }}
+<link rel="stylesheet" href="{{url_for('static', filename = 'css/search.css')}}">
+{% endblock %}
